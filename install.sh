@@ -1,36 +1,48 @@
 #!/bin/sh
 
-# 1. تحديد المسار الصحيح لملف الـ CCcam بناءً على جهازك
+# 1. مسار ملف الـ CCcam
 CCCAM_FILE="/etc/tuxbox/config/CCcam.cfg"
 
-# 2. رابط الـ Raw للملف على جيت هاب اللي فيه السطر
+# 2. رابط الـ Raw لجيت هاب
 URL="https://raw.githubusercontent.com/anow2008/cccam/main/server"
 
 echo "-------------------------------------------------------"
-echo "⬇️  جاري تحميل سطر السيرفر من GitHub..."
+echo "⬇️  جاري جلب سطر الـ CCcam من GitHub..."
 echo "-------------------------------------------------------"
 
-# 3. جلب السطر مباشرة من الرابط وتخزينه في متغير
-SERVER_LINE=$(wget -qO- --timeout=5 --tries=2 "$URL" | head -n 1 | tr -d '\r')
+# 3. محاولة سحب السطر مع تخطي فحص شهادات الأمان (SSL) لتفادي مشاكل الصور القديمة
+if command -v curl >/dev/null 2>&1; then
+    SERVER_LINE=$(curl -k -sL --max-time 10 "$URL" | head -n 1 | tr -d '\r\n' | xargs)
+elif command -v wget >/dev/null 2>&1; then
+    SERVER_LINE=$(wget --no-check-certificate -qO- --timeout=10 --tries=2 "$URL" | head -n 1 | tr -d '\r\n' | xargs)
+fi
 
-# التأكد من أن الرابط رجع ببيانات وليس فارغاً
+# لو الطرق العادية منجحتش، محاولة باستخدام wget المدمج في busybox بشكل مباشر
 if [ -z "$SERVER_LINE" ]; then
-    echo "❌ فشل في الاتصال بـ GitHub أو الملف فارغ!"
+    SERVER_LINE=$(wget -qO- "$URL" 2>/dev/null | head -n 1 | tr -d '\r\n' | xargs)
+fi
+
+# التأكد من أن السكربت نجح في سحب السطر ولم يرجع فارغاً
+if [ -z "$SERVER_LINE" ]; then
+    echo "❌ خطأ: لم يتم سحب أي بيانات!"
+    echo "تأكد من أن الرسيفر متصل بالإنترنت، أو جرب تشغيل الأمر يدوياً."
     exit 1
 fi
 
-# 4. التأكد من وجود ملف CCcam.cfg في المسار المحدد، وإذا لم يكن موجوداً يتم إنشاؤه
+# 4. التأكد من وجود الفولدر والملف
+mkdir -p "$(dirname "$CCCAM_FILE")"
 if [ ! -f "$CCCAM_FILE" ]; then
     touch "$CCCAM_FILE"
 fi
 
-# 5. كتابة السطر داخل الملف (إضافة في نهاية الملف بدون مسح محتوياته القديمة)
+# 5. كتابة السطر في نهاية الملف
 echo "$SERVER_LINE" >> "$CCCAM_FILE"
 
-# 6. إعطاء الملف تصريح 644 عشان الإيمو يقراه فوراً
+# 6. ضبط التصاريح
 chmod 644 "$CCCAM_FILE"
 
 echo "-------------------------------------------------------"
-echo "✅ تم بنجاح كتابة السطر داخل ملف CCcam.cfg في المسار الجديد:"
-echo "$CCCAM_FILE"
+echo "✅ تم بنجاح!"
+echo "✨ السطر المضاف: $SERVER_LINE"
+echo "📍 المسار: $CCCAM_FILE"
 echo "-------------------------------------------------------"
