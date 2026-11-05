@@ -1,5 +1,5 @@
 <skin>
-  <!-- Premium-FHD-Blue skin by MNASR for all images v3.1 -->
+  <!-- Premium-FHD-Blue skin  -->
   <!-- You are free to edit or modify this skin but please keep theses lines above and add your credits below -->
   <!-- oe-alliance -->
   <output id="0">
@@ -375,7 +375,10 @@
     <ePixmap name="" position="1760,1014" size="54,34" alphatest="blend" zPosition="99" pixmap="main/info_button.png" transparent="1" />
     <ePixmap name="" position="1820,1014" size="54,34" alphatest="blend" zPosition="99" pixmap="main/exit_button.png" transparent="1" />
     <widget source="Title" render="Label" position="34,22" size="1102,52" font="Regularn; 36" backgroundColor="background90" transparent="1" foregroundColor="chselfg" valign="center" zPosition="1" halign="left" />
-    <widget name="list" position="40,104" size="992,880" serviceItemHeight="55" serviceNumberFont="Regularn;34" serviceNameFont="Regularn;32" serviceInfoFont="Regularn;26" additionalInfoFont="Regularn;24" backgroundColor="background90" foregroundColor="white" foregroundColorSelected="yellow" colorServiceDescription="foreground2" colorServiceDescriptionSelected="chselfg" colorServiceStreamed="green" colorAdditionalInfo="white" colorAdditionalInfoSelected="white" foregroundColorServiceNotAvail="#444444" colorEventProgressbarBorderSelected="white" colorEventProgressbarBorder="mainskincolor" zPosition="4" transparent="1" halign="left" itemHeight="55" picServiceEventProgressbar="main/chprogressbar.png" progressbarHeight="10" progressBarWidth="100" progressbarBorderWidth="1" progressPercentWidth="60" scrollbarMode="showAlways" scrollbarForegroundColor="mainskincolor" scrollbarBorderColor="white" scrollbarWidth="14" scrollbarBorderWidth="1" scrollbarRadius="7" />
+    
+    <!-- قائمة القنوات مع ضبط ألوان التحديد واسم القناة والوصف لتطابق الصورة تماماً -->
+    <widget name="list" position="40,104" size="992,880" serviceItemHeight="55" serviceNumberFont="Regularn;34" serviceNameFont="Regularn;32" serviceInfoFont="Regularn;26" additionalInfoFont="Regularn;24" backgroundColor="background90" foregroundColor="white" foregroundColorSelected="gold" colorServiceDescription="foreground2" colorServiceDescriptionSelected="white" colorServiceStreamed="green" colorAdditionalInfo="yellow" colorAdditionalInfoSelected="yellow" foregroundColorServiceNotAvail="#444444" colorEventProgressbarBorderSelected="white" colorEventProgressbarBorder="mainskincolor" zPosition="4" transparent="1" halign="left" itemHeight="55" picServiceEventProgressbar="main/chprogressbar.png" progressbarHeight="10" progressBarWidth="100" progressbarBorderWidth="1" progressPercentWidth="60" scrollbarMode="showAlways" scrollbarForegroundColor="mainskincolor" scrollbarBorderColor="white" scrollbarWidth="14" scrollbarBorderWidth="1" scrollbarRadius="7" />
+
     <widget source="ServiceEvent" render="Picon" position="1072,108" size="240,134" transparent="1" alphatest="blend" zPosition="22">
       <convert type="ServiceName">Reference</convert>
     </widget>
